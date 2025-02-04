@@ -69,13 +69,29 @@ export default function Sidebar() {
   );
 }
 
-  // TODO: 4. Display ONLY the menu items that contain the filter element value
-  // "term" in them. Each menu item should be an unordered list item wrapped in an unordered list (ul) element.
+import React, { useState } from "react";
 
-  // TODO: 1 Render inside the outer div an unordered list of the menu items, with each string in the array
-  // its own item.
+export default function Sidebar() {
+  // State for the new menu item input
+  let [newMenuItem, setNewMenuItem] = useState("");
+  
+  // State for the menu items array
+  let [menuItems, setMenuItems] = useState([]);
+
+  // State for the filter input
+  let [filter, setFilter] = useState("");
+
+  // Function to add a new menu item to the list
+  const addMenuItem = () => {
+    if (newMenuItem.trim() !== "") {
+      setMenuItems([newMenuItem, ...menuItems]); // Adds the new item to the list
+      setNewMenuItem(""); // Clear the input after adding the item
+    }
+  };
+
   return (
     <div>
+      {/* Input for the new menu item */}
       <input
         type="text"
         id="newMenuItemValue"
@@ -83,14 +99,12 @@ export default function Sidebar() {
         onChange={(event) => setNewMenuItem(event.target.value)}
       ></input>
       <br />
-      <button
-        onClick={() => {
-          /* TODO: 3 */
-        }}
-      >
-        Add Item
-      </button>
+      
+      {/* Button to add the new menu item */}
+      <button onClick={addMenuItem}>Add Item</button>
       <br />
+      
+      {/* Input for the filter */}
       <input
         id="filter"
         type="text"
@@ -98,6 +112,15 @@ export default function Sidebar() {
         onChange={(event) => setFilter(event.target.value)}
         placeholder="Filter by..."
       ></input>
+
+      {/* Render the filtered list of menu items */}
+      <ul>
+        {menuItems
+          .filter((item) => item.toLowerCase().includes(filter.toLowerCase())) 
+          .map((item, index) => (
+            <li key={index}>{item}</li> 
+          ))}
+      </ul>
     </div>
-  )
+  );
 }
