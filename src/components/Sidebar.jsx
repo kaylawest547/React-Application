@@ -1,9 +1,22 @@
+// First Task
 import { useState, useCallback } from "react"
-/**
- * Renders an array of strings passed in that can be filtered and added to as an
- * unordered list.
- * @returns Component
- */
+const Sidebar = ({ initialMenuItems }) => {
+  const [menuItems, setMenuItems] = useState(initialMenuItems);
+
+  return (
+    <aside className="sidebar">
+      {/* TODO: Implement menu rendering */}
+      <ul>
+        {menuItems.map((item, index) => (
+          <li key={index}>{item}</li>
+        ))}
+      </ul>
+    </aside>
+  );
+};
+
+export default Sidebar;
+
 export default function Sidebar() {
   let [newMenuItem, setNewMenuItem] = useState("")
   // TODO: 2 Using a state hook, maintain the current menu items as an array state.
