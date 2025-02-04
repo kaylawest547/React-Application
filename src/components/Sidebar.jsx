@@ -17,19 +17,57 @@ const Sidebar = ({ initialMenuItems }) => {
 
 export default Sidebar;
 
+import React, { useState, useCallback } from "react";
+
 export default function Sidebar() {
-  let [newMenuItem, setNewMenuItem] = useState("")
-  // TODO: 2 Using a state hook, maintain the current menu items as an array state.
-  // let [menuItems, setMenuItems] = useState(initialMenuItems)
-  let [filter, setFilter] = useState("")
-  // Adds a single string passed in as parameter to the state element
-  // "menuItems" that holds the set of current menu items.
+  // New menu item
+  let [newMenuItem, setNewMenuItem] = useState("");
+  
+  // List of menu items
+  let [menuItems, setMenuItems] = useState([]); // This stores the current menu items
+
+  // Filter text
+  let [filter, setFilter] = useState("");
+
+  // Function to add a new menu item to the state
   let addMenuItem = useCallback(() => {
-    console.log("Added menu item")
-    //   // TODO: 3. Add a new menu item to the correct variable associated with this class.
-    //   // This involves adding a parameter and changing a class instance variable (props).
-    //   setMenuItems([item, ...menuItems])
-  }, [])
+    if (newMenuItem.trim() !== "") {
+      // Adds the new menu item to the existing list
+      setMenuItems((prevMenuItems) => [newMenuItem, ...prevMenuItems]);
+      setNewMenuItem(""); // Clear the input after adding
+      console.log("Added menu item:", newMenuItem);
+    }
+  }, [newMenuItem]); 
+
+  return (
+    <div>
+      <input
+        type="text"
+        value={newMenuItem}
+        onChange={(e) => setNewMenuItem(e.target.value)}
+        placeholder="Add a new menu item"
+      />
+      <button onClick={addMenuItem}>Add Menu Item</button>
+
+      <div>
+        <input
+          type="text"
+          value={filter}
+          onChange={(e) => setFilter(e.target.value)}
+          placeholder="Filter menu items"
+        />
+      </div>
+
+      <ul>
+        {menuItems
+          .filter((item) => item.toLowerCase().includes(filter.toLowerCase()))
+          .map((item, index) => (
+            <li key={index}>{item}</li>
+          ))}
+      </ul>
+    </div>
+  );
+}
 
   // TODO: 4. Display ONLY the menu items that contain the filter element value
   // "term" in them. Each menu item should be an unordered list item wrapped in an unordered list (ul) element.
